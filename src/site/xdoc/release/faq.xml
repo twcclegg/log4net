@@ -1198,7 +1198,7 @@ if(!log4net.LogManager.GetRepository().Configured)
                   <p>
                     Starting with .NET 4.5.1 ADO.NET has added
                     connection resiliency which is supposed to
-                    re-stablish the connection as part if the
+                    re-establish the connection as part if the
                     framework.  As a result log4net doesn't know the
                     connection is broken and will never attempt to
                     re-establish the connection.
