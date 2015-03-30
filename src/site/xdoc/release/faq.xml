@@ -261,14 +261,6 @@ limitations under the License.
                 <p><a href="#top">Back to Top</a></p>
                 
 
-                <section id="bug-fixes" name="How fast do bugs in log4net get fixed?">
-                    <p>
-                        As fast as they get reported ;-)
-                    </p>
-                </section>
-                <p><a href="#top">Back to Top</a></p>
-
-
                 <section id="history" name="What is the history of log4net?">
                     <p>
                         log4net is a port of the popular <a href="http://logging.apache.org/log4j/">Apache log4j&#x2122;</a> logging library.
