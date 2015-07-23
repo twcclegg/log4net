@@ -1,0 +1,7 @@
+build/
+src/.vs/
+src/log4net.xml
+src/obj/
+src/packages/
+tests/src/obj/
+tests/src/packages.config
