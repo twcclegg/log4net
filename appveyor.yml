@@ -1,20 +1,13 @@
 -
-    version: 1.2.13-await{build}
+    version: 1.2.13.{build}
     os: Windows Server 2012 R2
     platform: Any CPU
     configuration: Release
-    assembly_info:
-        patch: true
-        file: '**\AssemblyInfo.*'
-        assembly_version: '{version}'
-        assembly_file_version: '{version}'
-        assembly_informational_version: '{version}'
-    build:
-        project: src/log4net.vs2012.sln
-        publish_nuget: true
-        parallel: true
     before_build:
         - nuget restore src/log4net.vs2012.sln
-    nuget:
-        account_feed: true
-        disable_publish_on_pr: true
+    build:
+        project: src/log4net.vs2012.sln
+    after_test:
+        - nuget pack src\log4net.vs2012.csproj -version %APPVEYOR_BUILD_VERSION% -Properties "Configuration=Release;Platform=AnyCPU" -Symbols
+        - appveyor PushArtifact log4net-await.%APPVEYOR_BUILD_VERSION%.nupkg
+        - appveyor PushArtifact log4net-await.%APPVEYOR_BUILD_VERSION%.symbols.nupkg

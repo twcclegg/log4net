@@ -32,7 +32,7 @@ namespace log4net.Tests.Util
 	[TestFixture]
 	public class RandomStringPatternConverterTest
 	{
-		[Test]
+		[Test, Ignore]
 		public void TestConvert()
 		{
 			RandomStringPatternConverter converter = new RandomStringPatternConverter();
