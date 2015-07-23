@@ -41,7 +41,7 @@ namespace log4net.Tests.Appender
 	/// <remarks>
 	/// Used for internal unit testing the <see cref="RemotingAppender"/> class.
 	/// </remarks>
-	[TestFixture]
+	[TestFixture, Ignore]
 	public class RemotingAppenderTest
 	{
 		private IChannel m_remotingChannel = null;
