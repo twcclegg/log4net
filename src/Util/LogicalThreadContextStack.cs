@@ -16,7 +16,7 @@
 // limitations under the License.
 //
 #endregion
-
+#if NET_2_0
 using System;
 using System.Collections;
 
@@ -403,3 +403,4 @@ namespace log4net.Util
 
 	}
 }
+#endif
