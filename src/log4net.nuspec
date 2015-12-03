@@ -3,7 +3,7 @@
   <metadata>
     <id>log4net</id>
     <version>$version$</version>
-    <title> log4net await</title>
+    <title>log4net</title>
     <summary>Apache log4net with patch await support</summary>
     <authors>Apache Software Foundation</authors>
     <owners>Apache Software Foundation</owners>
