@@ -16,7 +16,7 @@
 // limitations under the License.
 //
 #endregion
-#if NET_2_0
+
 using System;
 using System.Collections;
 
@@ -24,7 +24,17 @@ using log4net.Core;
 
 namespace log4net.Util
 {
-	/// <summary>
+
+        /// <summary>
+	/// Delegate type used for LogicalThreadContextStack's callbacks.
+	/// </summary>
+    #if NET_2_0 || MONO_2_0
+	public delegate void TwoArgAction<T1, T2>(T1 t1, T2 t2);
+    #else
+	public delegate void TwoArgAction(string t1, LogicalThreadContextStack t2);
+    #endif
+
+        /// <summary>
 	/// Implementation of Stack for the <see cref="log4net.LogicalThreadContext"/>
 	/// </summary>
 	/// <remarks>
@@ -43,16 +53,20 @@ namespace log4net.Util
 		private Stack m_stack = new Stack();
 
 		/// <summary>
-		/// The name of this <see cref="log4net.LogicalThreadContextStack"/> within the
-		/// <see cref="log4net.LogicalThreadContextProperties"/>.
+		/// The name of this <see cref="log4net.Util.LogicalThreadContextStack"/> within the
+		/// <see cref="log4net.Util.LogicalThreadContextProperties"/>.
 		/// </summary>
 		private string m_propertyKey;
 
 		/// <summary>
-		/// The callback used to let the <see cref="log4net.LogicalThreadContextStacks"/> register a
-		/// new instance of a <see cref="log4net.LogicalThreadContextStack"/>.
+		/// The callback used to let the <see cref="log4net.Util.LogicalThreadContextStacks"/> register a
+		/// new instance of a <see cref="log4net.Util.LogicalThreadContextStack"/>.
 		/// </summary>
-		private Action<string, LogicalThreadContextStack> m_registerNew;
+		#if NET_2_0 || MONO_2_0
+		private TwoArgAction<string, LogicalThreadContextStack> m_registerNew;
+                #else
+		private TwoArgAction m_registerNew;
+		#endif
 
 		#endregion Private Instance Fields
 
@@ -66,7 +80,11 @@ namespace log4net.Util
 		/// Initializes a new instance of the <see cref="LogicalThreadContextStack" /> class. 
 		/// </para>
 		/// </remarks>
-		internal LogicalThreadContextStack(string propertyKey, Action<string, LogicalThreadContextStack> registerNew)
+		#if NET_2_0 || MONO_2_0
+		internal LogicalThreadContextStack(string propertyKey, TwoArgAction<string, LogicalThreadContextStack> registerNew)
+                #else
+		internal LogicalThreadContextStack(string propertyKey, TwoArgAction registerNew)
+		#endif
 		{
 			m_propertyKey = propertyKey;
 			m_registerNew = registerNew;
@@ -138,8 +156,9 @@ namespace log4net.Util
 			{
 				result = ((StackFrame)(stack.Pop())).Message;
 			}
-			m_registerNew(m_propertyKey,
-				new LogicalThreadContextStack(m_propertyKey, m_registerNew) { m_stack = stack });
+			LogicalThreadContextStack ltcs = new LogicalThreadContextStack(m_propertyKey, m_registerNew);
+			ltcs.m_stack = stack;
+			m_registerNew(m_propertyKey, ltcs);
 			return result;
 		}
 
@@ -172,7 +191,8 @@ namespace log4net.Util
 			Stack stack = new Stack(new Stack(m_stack));
 			stack.Push(new StackFrame(message, (stack.Count > 0) ? (StackFrame)stack.Peek() : null));
 
-			var contextStack = new LogicalThreadContextStack(m_propertyKey, m_registerNew) { m_stack = stack };
+			LogicalThreadContextStack contextStack = new LogicalThreadContextStack(m_propertyKey, m_registerNew);
+			contextStack.m_stack = stack;
 			m_registerNew(m_propertyKey, contextStack);
 			return new AutoPopStackFrame(contextStack, stack.Count - 1);
 		}
@@ -358,7 +378,7 @@ namespace log4net.Util
 			/// <summary>
 			/// Constructor
 			/// </summary>
-			/// <param name="frameStack">The internal stack used by the ThreadContextStack.</param>
+			/// <param name="logicalThreadContextStack">The internal stack used by the ThreadContextStack.</param>
 			/// <param name="frameDepth">The depth to return the stack to when this object is disposed.</param>
 			/// <remarks>
 			/// <para>
@@ -393,8 +413,10 @@ namespace log4net.Util
 					{
 						stack.Pop();
 					}
+					LogicalThreadContextStack ltcs = new LogicalThreadContextStack(m_logicalThreadContextStack.m_propertyKey, m_logicalThreadContextStack.m_registerNew);
+					ltcs.m_stack = stack;
 					m_logicalThreadContextStack.m_registerNew(m_logicalThreadContextStack.m_propertyKey,
-						new LogicalThreadContextStack(m_logicalThreadContextStack.m_propertyKey, m_logicalThreadContextStack.m_registerNew) { m_stack = stack });
+						ltcs);
 				}
 			}
 
@@ -403,4 +425,3 @@ namespace log4net.Util
 
 	}
 }
-#endif

@@ -28,11 +28,13 @@
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: System.Reflection.AssemblyVersion("1.2.13.16")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.2.13.16")]
+[assembly: System.Reflection.AssemblyVersion("1.2.15.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.2")]
 
 #if !NETCF
-[assembly: System.Reflection.AssemblyFileVersion("1.2.13.16")]
+#if !SSCLI
+[assembly: System.Reflection.AssemblyFileVersion("1.2.15.0")]
+#endif
 #endif
 
 //
@@ -40,5 +42,5 @@
 //
 
 [assembly: System.Reflection.AssemblyCompany("The Apache Software Foundation")]
-[assembly: System.Reflection.AssemblyCopyright("Copyright 2004-2013 The Apache Software Foundation.")]
+[assembly: System.Reflection.AssemblyCopyright("Copyright 2004-2015 The Apache Software Foundation.")]
 [assembly: System.Reflection.AssemblyTrademark("Apache and Apache log4net are trademarks of The Apache Software Foundation")]

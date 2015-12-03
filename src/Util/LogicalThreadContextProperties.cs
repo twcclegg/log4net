@@ -98,11 +98,11 @@ namespace log4net.Util
 				return null;
 			}
 			set 
-			{ 
+			{
 				// Force the dictionary to be created
 				PropertiesDictionary props = GetProperties(true);
-						// Reason for cloning the dictionary below: object instances set on the CallContext
-						// need to be immutable to correctly flow through async/await
+				// Reason for cloning the dictionary below: object instances set on the CallContext
+				// need to be immutable to correctly flow through async/await
 				PropertiesDictionary immutableProps = new PropertiesDictionary(props);
 				immutableProps[key] = value;
 				SetCallContextData(immutableProps);
@@ -211,12 +211,12 @@ namespace log4net.Util
 		/// security link demand, therfore we must put the method call in a seperate method
 		/// that we can wrap in an exception handler.
 		/// </remarks>
-#if NET_4_0
+#if NET_4_0 || MONO_4_0
         [System.Security.SecuritySafeCritical]
 #endif
         private static PropertiesDictionary GetCallContextData()
 		{
-#if !NETCF
+#if NET_2_0 || MONO_2_0 || MONO_3_5 || MONO_4_0
             return CallContext.LogicalGetData(c_SlotName) as PropertiesDictionary;
 #else
 			return CallContext.GetData(c_SlotName) as PropertiesDictionary;
@@ -232,12 +232,12 @@ namespace log4net.Util
 		/// security link demand, therfore we must put the method call in a seperate method
 		/// that we can wrap in an exception handler.
 		/// </remarks>
-#if NET_4_0
+#if NET_4_0 || MONO_4_0
         [System.Security.SecuritySafeCritical]
 #endif
         private static void SetCallContextData(PropertiesDictionary properties)
 		{
-#if !NETCF
+#if NET_2_0 || MONO_2_0 || MONO_3_5 || MONO_4_0
 			CallContext.LogicalSetData(c_SlotName, properties);
 #else
 			CallContext.SetData(c_SlotName, properties);

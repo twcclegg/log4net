@@ -17,6 +17,13 @@
 //
 #endregion
 
+// MONO 1.0 has no support for Win32 OutputDebugString API
+#if !MONO
+// SSCLI 1.0 has no support for Win32 OutputDebugString API
+#if !SSCLI
+// We don't want framework or platform specific code in the CLI version of log4net
+#if !CLI_1_0
+
 using System.Runtime.InteropServices;
 
 using log4net.Layout;
@@ -68,7 +75,7 @@ namespace log4net.Appender
 		/// Write the logging event to the output debug string API
 		/// </para>
 		/// </remarks>
-#if NET_4_0
+#if NET_4_0 || MONO_4_0
         [System.Security.SecuritySafeCritical]
 #elif !NETCF
         [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Demand, UnmanagedCode = true)]
@@ -115,3 +122,7 @@ namespace log4net.Appender
 		#endregion // Protected Static Methods
 	}
 }
+
+#endif // !CLI_1_0
+#endif // !SSCLI
+#endif // !MONO

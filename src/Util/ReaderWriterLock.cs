@@ -20,7 +20,7 @@
 #if (!NETCF)
 #define HAS_READERWRITERLOCK
 #endif
-#if (NET_4_0)
+#if NET_4_0 || MONO_4_0
 #define HAS_READERWRITERLOCKSLIM
 #endif
 
@@ -88,7 +88,12 @@ namespace log4net.Util
 		{
 #if HAS_READERWRITERLOCK
 #if HAS_READERWRITERLOCKSLIM
+                    // prevent ThreadAbort while updating state, see https://issues.apache.org/jira/browse/LOG4NET-443
+                    try { } 
+                    finally
+                    {
 			m_lock.EnterReadLock();
+                    }
 #else
 			m_lock.AcquireReaderLock(-1);
 #endif
@@ -132,7 +137,12 @@ namespace log4net.Util
 		{
 #if HAS_READERWRITERLOCK
 #if HAS_READERWRITERLOCKSLIM
+                    // prevent ThreadAbort while updating state, see https://issues.apache.org/jira/browse/LOG4NET-443
+                    try { } 
+                    finally
+                    {
 			m_lock.EnterWriteLock();
+                    }
 #else
 			m_lock.AcquireWriterLock(-1);
 #endif

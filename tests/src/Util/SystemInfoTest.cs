@@ -23,7 +23,7 @@ using log4net.Util;
 
 using NUnit.Framework;
 
-#if NET_4_0
+#if NET_4_0 || MONO_4_0
 using System.Linq.Expressions;
 using System.Reflection;
 #endif
@@ -37,7 +37,7 @@ namespace log4net.Tests.Util
 	public class SystemInfoTest
 	{
 
-#if NET_4_0
+#if NET_4_0 || MONO_4_0
 		/// <summary>
 		/// It's "does not throw not supported exception" NOT
 		/// "returns 'Dynamic Assembly' string for dynamic assemblies" by purpose.
@@ -117,7 +117,9 @@ namespace log4net.Tests.Util
 			Type t;
 
 			t = SystemInfo.GetTypeFromString("log4net.Util.SystemInfo", false, false);
-			Assert.AreSame(typeof(SystemInfo), t, "Test explicit case sensitive type load");
+			Assert.AreSame(typeof(SystemInfo), t,
+                                       string.Format("Test explicit case sensitive type load found {0} rather than {1}",
+                                                     t.AssemblyQualifiedName, typeof(SystemInfo).AssemblyQualifiedName));
 
 			t = SystemInfo.GetTypeFromString("LOG4NET.UTIL.SYSTEMINFO", false, true);
 			Assert.AreSame(typeof(SystemInfo), t, "Test explicit case in-sensitive type load caps");

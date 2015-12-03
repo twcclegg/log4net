@@ -20,6 +20,10 @@
 using System;
 using System.Collections;
 
+#if NETCF_1_0
+using Stack = log4net.Util.ThreadContextStack.Stack;
+#endif
+
 namespace log4net
 {
 	/// <summary>

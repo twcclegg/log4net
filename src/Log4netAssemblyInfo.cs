@@ -25,24 +25,40 @@ namespace log4net {
     /// </summary>
     public sealed class AssemblyInfo {
         /// <summary>Version of the assembly</summary>
-        public const string Version = "1.2.13";
+        public const string Version = "1.2.15";
 
         /// <summary>Version of the framework targeted</summary>
-#if NET_4_0
+#if NET_1_1
+        public const decimal TargetFrameworkVersion = 1.1M;
+#elif NET_4_5
+        public const decimal TargetFrameworkVersion = 4.5M;
+#elif NET_4_0 || MONO_4_0
+        public const decimal TargetFrameworkVersion = 4.5M;
+#elif FRAMEWORK_4_0_OR_ABOVE
         public const decimal TargetFrameworkVersion = 4.0M;
-#elif !CLIENT_PROFILE
+#elif MONO_3_5
+        public const decimal TargetFrameworkVersion = 3.5M;
+#elif NET_2_0 || NETCF_2_0 || MONO_2_0
+#if !CLIENT_PROFILE
         public const decimal TargetFrameworkVersion = 2.0M;
 #else
         public const decimal TargetFrameworkVersion = 3.5M;
+#endif  // Client Profile
+#else
+        public const decimal TargetFrameworkVersion = 1.0M;
 #endif
 
         /// <summary>Type of framework targeted</summary>
-#if NET
+#if CLI
+        public const string TargetFramework = "CLI Compatible Frameworks";
+#elif NET
         public const string TargetFramework = ".NET Framework";
 #elif NETCF
         public const string TargetFramework = ".NET Compact Framework";
 #elif MONO
         public const string TargetFramework = "Mono";
+#elif SSCLI
+        public const string TargetFramework = "Shared Source CLI";
 #else
         public const string TargetFramework = "Unknown";
 #endif

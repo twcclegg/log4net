@@ -639,6 +639,7 @@ namespace log4net.Config
 
 					if (configRequest != null)
 					{
+#if !NETCF_1_0
 						// authentication may be required, set client to use default credentials
 						try
 						{
@@ -648,7 +649,7 @@ namespace log4net.Config
 						{
 							// ignore security exception
 						}
-
+#endif
 						try
 						{
 							WebResponse response = configRequest.GetResponse();
@@ -729,7 +730,7 @@ namespace log4net.Config
 					XmlReaderSettings settings = new XmlReaderSettings();
                                         // .NET 4.0 warning CS0618: 'System.Xml.XmlReaderSettings.ProhibitDtd'
                                         // is obsolete: 'Use XmlReaderSettings.DtdProcessing property instead.'
-#if !NET_4_0
+#if !NET_4_0 && !MONO_4_0
 					settings.ProhibitDtd = false;
 #else
 					settings.DtdProcessing = DtdProcessing.Parse;
@@ -784,7 +785,7 @@ namespace log4net.Config
 
 		#region ConfigureAndWatch static methods
 
-#if !NETCF
+#if (!NETCF && !SSCLI)
 
 		/// <summary>
 		/// Configures log4net using the file specified, monitors the file for changes 
@@ -905,7 +906,7 @@ namespace log4net.Config
 
 		#region ConfigureAndWatchHandler
 
-#if !NETCF
+#if (!NETCF && !SSCLI)
 		/// <summary>
 		/// Class used to watch config files.
 		/// </summary>
@@ -962,7 +963,7 @@ namespace log4net.Config
 			/// Initializes a new instance of the <see cref="ConfigureAndWatchHandler" /> class.
 			/// </para>
 			/// </remarks>
-#if NET_4_0
+#if NET_4_0 || MONO_4_0
             [System.Security.SecuritySafeCritical]
 #endif
             public ConfigureAndWatchHandler(ILoggerRepository repository, FileInfo configFile)
@@ -1042,7 +1043,7 @@ namespace log4net.Config
             /// <summary>
             /// Release the handles held by the watcher and timer.
             /// </summary>
-#if NET_4_0
+#if NET_4_0 || MONO_4_0
             [System.Security.SecuritySafeCritical]
 #endif
             public void Dispose()

@@ -828,7 +828,7 @@ namespace log4net.Core
 			{
 				if (m_data.UserName == null  && this.m_cacheUpdatable) 
 				{
-#if NETCF
+#if (NETCF || SSCLI)
 					// On compact framework there's no notion of current Windows user
 					m_data.UserName = SystemInfo.NotAvailableText;
 #else
@@ -876,7 +876,7 @@ namespace log4net.Core
 			{
 				if (m_data.Identity == null  && this.m_cacheUpdatable)
 				{
-#if NETCF
+#if (NETCF || SSCLI)
 					// On compact framework there's no notion of current thread principals
 					m_data.Identity = SystemInfo.NotAvailableText;
 #else
@@ -1022,7 +1022,7 @@ namespace log4net.Core
 		/// is to be used outside that method.
 		/// </para>
 		/// </remarks>
-#if NET_4_0
+#if NET_4_0 || MONO_4_0
         [System.Security.SecurityCritical]
 #else
 		[System.Security.Permissions.SecurityPermissionAttribute(System.Security.Permissions.SecurityAction.Demand, SerializationFormatter=true)]

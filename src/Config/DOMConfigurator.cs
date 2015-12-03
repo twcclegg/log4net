@@ -287,7 +287,7 @@ namespace log4net.Config
 
 		#region ConfigureAndWatch static methods
 
-#if !NETCF
+#if (!NETCF && !SSCLI)
 
 		/// <summary>
 		/// Configures log4net using the file specified, monitors the file for changes 

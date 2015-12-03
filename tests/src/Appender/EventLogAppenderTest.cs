@@ -78,7 +78,7 @@ namespace log4net.Tests.Appender
         /// <summary>
         /// ActivateOption tries to create an event source if it doesn't exist but this is going to fail on more modern Windows versions unless the code is run with local administrator privileges.
         /// </summary>
-        [Test, Ignore]
+        [Test]
         [Platform(Exclude = "Win2K,WinXP", Include="Win")]
         public void ActivateOptionsDisablesAppenderIfSourceDoesntExist()
         {

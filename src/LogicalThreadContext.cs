@@ -125,11 +125,7 @@ namespace log4net
 		/// The logical thread stacks.
 		/// </para>
 		/// </remarks>
-#if NET_2_0
 		public static LogicalThreadContextStacks Stacks
-#else
-		public static ThreadContextStacks Stacks
-#endif
 		{
 			get { return s_stacks; }
 		}
@@ -146,11 +142,7 @@ namespace log4net
 		/// <summary>
 		/// The thread context stacks instance
 		/// </summary>
-#if NET_2_0
 		private readonly static LogicalThreadContextStacks s_stacks = new LogicalThreadContextStacks(s_properties);
-#else
-		private readonly static ThreadContextStacks s_stacks = new ThreadContextStacks(s_properties);
-#endif
 
 		#endregion Private Static Fields
 	}

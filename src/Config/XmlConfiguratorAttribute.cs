@@ -168,6 +168,9 @@ namespace log4net.Config
 		/// from a web server the config file may not reside on the local disk
 		/// and therefore it may not be able to watch it.
 		/// </para>
+		/// <note>
+		/// Watching configuration is not supported on the SSCLI.
+		/// </note>
 		/// </remarks>
 		public bool Watch
 		{
@@ -310,6 +313,13 @@ namespace log4net.Config
 		/// <param name="configFile">the FileInfo pointing to the config file</param>
 		private void ConfigureFromFile(ILoggerRepository targetRepository, FileInfo configFile)
 		{
+#if (SSCLI)
+			if (m_configureAndWatch)
+			{
+				LogLog.Warn(declaringType, "XmlConfiguratorAttribute: Unable to watch config file not supported on SSCLI");
+			}
+			XmlConfigurator.Configure(targetRepository, configFile);
+#else
 			// Do we configure just once or do we configure and then watch?
 			if (m_configureAndWatch)
 			{
@@ -319,6 +329,7 @@ namespace log4net.Config
 			{
 				XmlConfigurator.Configure(targetRepository, configFile);
 			}
+#endif
 		}
 
 		/// <summary>

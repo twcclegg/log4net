@@ -41,7 +41,7 @@ namespace log4net.Tests.Appender
 	/// <remarks>
 	/// Used for internal unit testing the <see cref="RemotingAppender"/> class.
 	/// </remarks>
-	[TestFixture, Ignore]
+	[TestFixture]
 	public class RemotingAppenderTest
 	{
 		private IChannel m_remotingChannel = null;
@@ -202,12 +202,19 @@ namespace log4net.Tests.Appender
 		{
 			if (m_remotingChannel == null)
 			{
-				m_remotingChannel = new TcpChannel(8085);
+				BinaryClientFormatterSinkProvider clientSinkProvider = new BinaryClientFormatterSinkProvider();
 
+				BinaryServerFormatterSinkProvider serverSinkProvider = new BinaryServerFormatterSinkProvider();
+				serverSinkProvider.TypeFilterLevel = System.Runtime.Serialization.Formatters.TypeFilterLevel.Full;
+
+				Hashtable channelProperties = new Hashtable();
+				channelProperties["port"] = 8085;
+
+				m_remotingChannel = new TcpChannel(channelProperties, clientSinkProvider, serverSinkProvider);
 				// Setup remoting server
 				try
 				{
-#if !NETCF
+#if NET_2_0 || MONO_2_0 || MONO_3_5 || MONO_4_0
 					ChannelServices.RegisterChannel(m_remotingChannel, false);
 #else
 					ChannelServices.RegisterChannel(m_remotingChannel);
