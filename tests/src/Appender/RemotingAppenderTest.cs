@@ -49,7 +49,7 @@ namespace log4net.Tests.Appender
 		/// <summary>
 		/// Test that the Message property is correctly remoted
 		/// </summary>
-		[Test]
+		[Test, Ignore]
 		public void TestRemotedMessage()
 		{
 			// Setup the remoting appender
@@ -77,7 +77,7 @@ namespace log4net.Tests.Appender
 		/// <summary>
 		/// Test that the LocationInfo property is not remoted when doing a Fix.Partial
 		/// </summary>
-		[Test]
+		[Test, Ignore]
 		public void TestPartialFix()
 		{
 			// Setup the remoting appender
@@ -106,7 +106,7 @@ namespace log4net.Tests.Appender
 		/// <summary>
 		/// Test that the LocationInfo property is remoted when doing a Fix.All
 		/// </summary>
-		[Test]
+		[Test, Ignore]
 		public void TestFullFix()
 		{
 			// Setup the remoting appender
@@ -135,7 +135,7 @@ namespace log4net.Tests.Appender
 		/// <summary>
 		/// Test that the Message property is correctly remoted
 		/// </summary>
-		[Test]
+		[Test, Ignore]
 		public void TestRemotedMessageNdcPushPop()
 		{
 			// Setup the remoting appender
@@ -164,7 +164,7 @@ namespace log4net.Tests.Appender
 			Assert.AreEqual(testMessage, events[0].RenderedMessage, "Expect Message match after remoting event");
 		}
 
-		[Test]
+		[Test, Ignore]
 		public void TestNestedNdc()
 		{
 			// This test can suffer from timing and ordering issues as the RemotingAppender does dispatch events asynchronously
